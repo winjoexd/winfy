@@ -1,5 +1,6 @@
 use gtk4::prelude::*;
 use gtk4::{Align, Application, ApplicationWindow, Button};
+use gtk4::glib::clone;
 
 fn main() {
     let application = Application::new(Some("com.winjoexd.winfy"), Default::default());
@@ -21,10 +22,9 @@ fn build_ui(application: &Application) {
         .margin_end(12)
         .build();
 
-    let window_clone = window.clone();
-    button.connect_clicked(move |_| {
-        window_clone.close();
-    });
+    button.connect_clicked(clone!(@strong window => move |_| {
+        window.close();
+    }));
 
     window.set_child(Some(&button));
 
