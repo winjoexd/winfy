@@ -1,6 +1,6 @@
+use gtk4::glib::clone;
 use gtk4::prelude::*;
 use gtk4::{Align, Application, ApplicationWindow, Button};
-use gtk4::glib::clone;
 
 fn main() {
     let application = Application::new(Some("org.winjoexd.winfy"), Default::default());
@@ -27,27 +27,52 @@ fn build_ui(application: &Application) {
     }));
 
     let scroll_window = gtk4::ScrolledWindow::builder()
-        .vexpand(true)
-        .hexpand(true)
+        .height_request(240)
+        .width_request(310)
         .build();
 
     let text_input = gtk4::TextView::builder()
+        .hexpand(true)
+        .vexpand(true)
         .build();
-    
+
     scroll_window.set_child(Some(&text_input));
+
+    let scroll_window_2 = gtk4::ScrolledWindow::builder()
+        .height_request(240)
+        .width_request(310)
+        .build();
+
+    let text_output = gtk4::TextView::builder()
+        .hexpand(true)
+        .vexpand(true)
+        .build();
+
+    scroll_window_2.set_child(Some(&text_output));
+
+    let container_texts = gtk4::Box::builder()
+        .orientation(gtk4::Orientation::Horizontal)
+        .margin_top(8)
+        .margin_bottom(8)
+        .margin_start(8)
+        .margin_end(8)
+        .spacing(8)
+        .build();
+    container_texts.append(&scroll_window);
+    container_texts.append(&scroll_window_2);
 
     let container = gtk4::Box::builder()
         .orientation(gtk4::Orientation::Vertical)
-        .margin_top(24)
-        .margin_bottom(24)
-        .margin_start(24)
-        .margin_end(24)
+        .margin_top(8)
+        .margin_bottom(8)
+        .margin_start(8)
+        .margin_end(8)
         .halign(gtk4::Align::Center)
         .valign(gtk4::Align::Center)
-        .spacing(24)
+        .spacing(8)
         .build();
 
-    container.append(&scroll_window);
+    container.append(&container_texts);
     container.append(&button);
     window.set_child(Some(&container));
 
