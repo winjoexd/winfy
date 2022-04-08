@@ -31,8 +31,9 @@ fn build_ui(application: &Application) {
         .hexpand(true)
         .build();
 
-    let text_input = gtk4::ScrolledWindow::builder()
+    let text_input = gtk4::TextView::builder()
         .build();
+    
     scroll_window.set_child(Some(&text_input));
 
     let container = gtk4::Box::builder()
