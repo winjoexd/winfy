@@ -1,6 +1,6 @@
 use gtk4::glib::clone;
 use gtk4::prelude::*;
-use gtk4::{Align, Application, ApplicationWindow, Button};
+use gtk4::{Align, Application, ApplicationWindow, Button, ScrolledWindow, TextView, Box, Orientation, DropDown};
 
 fn main() {
     let application = Application::new(Some("org.winjoexd.winfy"), Default::default());
@@ -14,66 +14,104 @@ fn build_ui(application: &Application) {
     window.set_title(Some("WinFY"));
     window.set_default_size(640, 480);
 
-    let button = Button::builder()
+    let button_exit = Button::builder()
         .label("Exit")
         .halign(Align::End)
-        .valign(Align::End)
-        .margin_bottom(12)
-        .margin_end(12)
+        // .valign(Align::Center)
+        // .margin_bottom(12)
+        // .margin_end(12)
         .build();
 
-    button.connect_clicked(clone!(@strong window => move |_| {
+    button_exit.connect_clicked(clone!(@strong window => move |_| {
         window.close();
     }));
 
-    let scroll_window = gtk4::ScrolledWindow::builder()
+    let button_fy = Button::builder()
+        .label("FY")
+        // .halign(Align::Start)
+        // .valign(Align::Center)
+        // .margin_top(12)
+        // .margin_start(12)
+        .build();
+
+    button_fy.connect_clicked(|_| {
+        println!("Test");
+    });
+
+    let container_buttons = Box::builder()
+        .orientation(Orientation::Horizontal)
+        // .halign(Align::Center)
+        .valign(Align::Center)
+        .spacing(8)
+        .width_request(620)
+        .build();
+    container_buttons.append(&button_fy);
+    container_buttons.append(&button_exit);
+
+    let langs_items = ["ENG", "CHT"];
+    
+    let langs_input = DropDown::from_strings(&langs_items);
+    let langs_output = DropDown::from_strings(&langs_items);
+    
+    let container_langs = Box::builder()
+        .orientation(Orientation::Horizontal)
+        .halign(Align::Center)
+        .valign(Align::Center)
+        .spacing(8)
+        .build();
+    container_langs.append(&langs_input);
+    container_langs.append(&langs_output);
+    langs_output.set_selected(1);
+
+    let scroll_window_1 = ScrolledWindow::builder()
         .height_request(240)
         .width_request(310)
         .build();
 
-    let text_input = gtk4::TextView::builder()
+    let text_input = TextView::builder()
         .hexpand(true)
         .vexpand(true)
         .build();
 
-    scroll_window.set_child(Some(&text_input));
+    scroll_window_1.set_child(Some(&text_input));
 
-    let scroll_window_2 = gtk4::ScrolledWindow::builder()
+    let scroll_window_2 = ScrolledWindow::builder()
         .height_request(240)
         .width_request(310)
         .build();
 
-    let text_output = gtk4::TextView::builder()
+    let text_output = TextView::builder()
         .hexpand(true)
         .vexpand(true)
         .build();
 
     scroll_window_2.set_child(Some(&text_output));
 
-    let container_texts = gtk4::Box::builder()
-        .orientation(gtk4::Orientation::Horizontal)
+    let container_texts = Box::builder()
+        .orientation(Orientation::Horizontal)
         .margin_top(8)
         .margin_bottom(8)
         .margin_start(8)
         .margin_end(8)
         .spacing(8)
         .build();
-    container_texts.append(&scroll_window);
+    container_texts.append(&scroll_window_1);
     container_texts.append(&scroll_window_2);
 
-    let container = gtk4::Box::builder()
-        .orientation(gtk4::Orientation::Vertical)
+    let container = Box::builder()
+        .orientation(Orientation::Vertical)
         .margin_top(8)
         .margin_bottom(8)
         .margin_start(8)
         .margin_end(8)
-        .halign(gtk4::Align::Center)
-        .valign(gtk4::Align::Center)
+        .halign(Align::Center)
+        .valign(Align::Center)
         .spacing(8)
         .build();
 
+    container.append(&container_langs);
     container.append(&container_texts);
-    container.append(&button);
+    container.append(&container_buttons);
     window.set_child(Some(&container));
 
     window.show();
