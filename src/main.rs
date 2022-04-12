@@ -12,38 +12,26 @@ fn build_ui(application: &Application) {
     let window = ApplicationWindow::new(application);
 
     window.set_title(Some("WinFY"));
-    window.set_default_size(640, 480);
+    window.set_default_size(640, 300);
 
     let button_exit = Button::builder()
         .label("Exit")
-        .halign(Align::End)
-        // .valign(Align::Center)
-        // .margin_bottom(12)
-        // .margin_end(12)
-        .build();
+         .build();
 
     button_exit.connect_clicked(clone!(@strong window => move |_| {
         window.close();
     }));
 
     let button_fy = Button::builder()
-        .label("FY")
-        // .halign(Align::Start)
-        // .valign(Align::Center)
-        // .margin_top(12)
-        // .margin_start(12)
+         .label("FY")
         .build();
-
-    button_fy.connect_clicked(|_| {
-        println!("Test");
-    });
 
     let container_buttons = Box::builder()
         .orientation(Orientation::Horizontal)
-        // .halign(Align::Center)
+        .halign(Align::End)
         .valign(Align::Center)
-        .spacing(8)
-        .width_request(620)
+        .margin_end(8)
+        .spacing(100)
         .build();
     container_buttons.append(&button_fy);
     container_buttons.append(&button_exit);
@@ -83,6 +71,7 @@ fn build_ui(application: &Application) {
     let text_output = TextView::builder()
         .hexpand(true)
         .vexpand(true)
+        .editable(false)
         .build();
 
     scroll_window_2.set_child(Some(&text_output));
@@ -113,6 +102,14 @@ fn build_ui(application: &Application) {
     container.append(&container_texts);
     container.append(&container_buttons);
     window.set_child(Some(&container));
+
+    button_fy.connect_clicked(clone!(@strong text_output => move |_| {
+        let start = text_input.buffer().start_iter();
+        let end = text_input.buffer().end_iter();
+        let read_str = text_input.buffer().text(&start, &end, false);
+        println!("{}", read_str);
+        text_output.buffer().set_text(&format!("{}", read_str).to_string());
+    }));
 
     window.show();
 }
