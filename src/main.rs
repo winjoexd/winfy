@@ -1,6 +1,8 @@
 use gtk4::glib::clone;
 use gtk4::prelude::*;
 use gtk4::{Align, Application, ApplicationWindow, Button, ScrolledWindow, TextView, Box, Orientation, DropDown};
+mod fy;
+use crate::fy::fy::fy_handle;
 
 fn main() {
     let application = Application::new(Some("org.winjoexd.winfy"), Default::default());
@@ -108,7 +110,8 @@ fn build_ui(application: &Application) {
         let end = text_input.buffer().end_iter();
         let read_str = text_input.buffer().text(&start, &end, false);
         println!("{}", read_str);
-        text_output.buffer().set_text(&format!("{}", read_str).to_string());
+        let output_str = fy_handle(read_str.to_string());
+        text_output.buffer().set_text(&format!("{}", output_str).to_string());
     }));
 
     window.show();
