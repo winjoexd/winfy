@@ -109,7 +109,6 @@ fn build_ui(application: &Application) {
         let start = text_input.buffer().start_iter();
         let end = text_input.buffer().end_iter();
         let read_str = text_input.buffer().text(&start, &end, false);
-        println!("{}", read_str);
         let output_str = fy_handle(read_str.to_string());
         text_output.buffer().set_text(&output_str);
     }));
