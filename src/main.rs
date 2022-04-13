@@ -111,7 +111,7 @@ fn build_ui(application: &Application) {
         let read_str = text_input.buffer().text(&start, &end, false);
         println!("{}", read_str);
         let output_str = fy_handle(read_str.to_string());
-        text_output.buffer().set_text(&format!("{}", output_str).to_string());
+        text_output.buffer().set_text(&output_str);
     }));
 
     window.show();
