@@ -25,7 +25,7 @@ fn build_ui(application: &Application) {
     }));
 
     let button_fy = Button::builder()
-         .label("FY")
+        .label("FY")
         .build();
 
     let container_buttons = Box::builder()
