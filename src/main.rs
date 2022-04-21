@@ -44,11 +44,13 @@ fn build_ui(application: &Application) {
     let langs_output = DropDown::from_strings(&langs_items);
 
     langs_input.connect_selected_notify(clone!(@strong langs_input, @strong langs_output => move |_| {
-        if langs_input.selected() == 0 {
+        let input_index = langs_input.selected();
+        
+        if input_index == 0 {
             langs_output.set_selected(1);
-        } else if langs_input.selected() == 1 {
+        } else if input_index == 1 {
             langs_output.set_selected(0);
-        } 
+        }
     }));
     
     let container_langs = Box::builder()
@@ -114,10 +116,15 @@ fn build_ui(application: &Application) {
     window.set_child(Some(&container));
 
     button_fy.connect_clicked(clone!(@strong text_output => move |_| {
+        let input_index = langs_input.selected();
+        let output_index = langs_output.selected();
         let start = text_input.buffer().start_iter();
         let end = text_input.buffer().end_iter();
         let read_str = text_input.buffer().text(&start, &end, false);
-        let output_str = fy_handle(read_str.to_string());
+
+        let output_str = fy_handle(read_str.to_string(), 
+            langs_items[input_index as usize].to_string(), langs_items[output_index as usize].to_string());
+        
         text_output.buffer().set_text(&output_str);
     }));
 
