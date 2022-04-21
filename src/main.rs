@@ -42,6 +42,14 @@ fn build_ui(application: &Application) {
     
     let langs_input = DropDown::from_strings(&langs_items);
     let langs_output = DropDown::from_strings(&langs_items);
+
+    langs_input.connect_selected_notify(clone!(@strong langs_input, @strong langs_output => move |_| {
+        if langs_input.selected() == 0 {
+            langs_output.set_selected(1);
+        } else if langs_input.selected() == 1 {
+            langs_output.set_selected(0);
+        } 
+    }));
     
     let container_langs = Box::builder()
         .orientation(Orientation::Horizontal)
