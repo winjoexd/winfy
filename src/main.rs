@@ -1,8 +1,8 @@
 use gtk4::glib::clone;
 use gtk4::prelude::*;
-use gtk4::{Align, Application, ApplicationWindow, Button, ScrolledWindow, TextView, Box, Orientation, DropDown};
-mod fy;
-use crate::fy::fy::fy_handle;
+use gtk4::{Align, Application, ApplicationWindow, Button, ScrolledWindow, TextView, Box, Orientation, DropDown, WrapMode};
+mod fy_lib;
+use fy_lib::fy_handle;
 
 fn main() {
     let application = Application::new(Some("org.winjoexd.winfy"), Default::default());
@@ -71,6 +71,7 @@ fn build_ui(application: &Application) {
     let text_input = TextView::builder()
         .hexpand(true)
         .vexpand(true)
+        .wrap_mode(WrapMode::Word)
         .build();
 
     scroll_window_1.set_child(Some(&text_input));
@@ -84,6 +85,7 @@ fn build_ui(application: &Application) {
         .hexpand(true)
         .vexpand(true)
         .editable(false)
+        .wrap_mode(WrapMode::Word)
         .build();
 
     scroll_window_2.set_child(Some(&text_output));
